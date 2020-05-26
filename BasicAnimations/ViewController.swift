@@ -23,6 +23,7 @@ class ViewController: UIViewController {
         view.backgroundColor = .systemBackground
         // Places label in middle of view container (both x and y axis)
         configureLabel()
+        configureButtons()
         label.center = view.center
     }
 
@@ -40,10 +41,37 @@ class ViewController: UIViewController {
     }
     
     private func configureButtons() {
+        let rotateButton = UIButton(type: .system)
+        rotateButton.translatesAutoresizingMaskIntoConstraints = false
+        rotateButton.setTitle("Rotate", for: .normal)
+        rotateButton.addTarget(self, action: #selector(rotateButtonTapped), for: .touchUpInside)
+        
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .horizontal
+        stackView.distribution = .equalSpacing
+        view.addSubview(stackView)
+        
+        stackView.addArrangedSubview(rotateButton)
+        
+        NSLayoutConstraint.activate([
+            stackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
+            stackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
+            stackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20)
+        ])
         
     }
     
     @objc private func rotateButtonTapped() {
+        label.center = view.center
+        
+        UIView.animate(withDuration: 2.0, animations: {
+            self.label.transform = CGAffineTransform(rotationAngle: .pi / 4)
+        }) { _ in
+            UIView.animate(withDuration: 2.0) {
+                self.label.transform = .identity
+            }
+        }
         
     }
     

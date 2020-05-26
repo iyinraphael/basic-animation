@@ -20,12 +20,23 @@ class ViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
+        view.backgroundColor = .systemBackground
         // Places label in middle of view container (both x and y axis)
+        configureLabel()
         label.center = view.center
     }
 
     private func configureLabel() {
+        label = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 200))
+        label.layer.borderWidth = 2
+        label.layer.cornerRadius = 12
+        label.text = "🤦🏿‍♂️"
+        label.textAlignment = .center
+        label.font = UIFont.systemFont(ofSize: 96)
         
+        view.addSubview(label)
+        
+        label.widthAnchor.constraint(equalTo: label.heightAnchor).isActive = true
     }
     
     private func configureButtons() {

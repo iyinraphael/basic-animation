@@ -51,6 +51,21 @@ class ViewController: UIViewController {
         springButton.setTitle("Spring", for: .normal)
         springButton.addTarget(self, action: #selector(springButtonTapped), for: .touchUpInside)
         
+        let keyButton = UIButton(type: .system)
+        keyButton.translatesAutoresizingMaskIntoConstraints = false
+        keyButton.setTitle("Key", for: .normal)
+        keyButton.addTarget(self, action: #selector(keyButtonTapped), for: .touchUpInside)
+        
+        let squashButton = UIButton(type: .system)
+        squashButton.translatesAutoresizingMaskIntoConstraints = false
+        squashButton.setTitle("Squash", for: .normal)
+        squashButton.addTarget(self, action: #selector(squashButtonTapped), for: .touchUpInside)
+        
+        let anticipationButton = UIButton(type: .system)
+        anticipationButton.translatesAutoresizingMaskIntoConstraints = false
+        anticipationButton.setTitle("Anticipation", for: .normal)
+        anticipationButton.addTarget(self, action: #selector(anticipationButtonTapped), for: .touchUpInside)
+        
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
@@ -59,6 +74,9 @@ class ViewController: UIViewController {
         
         stackView.addArrangedSubview(rotateButton)
         stackView.addArrangedSubview(springButton)
+        stackView.addArrangedSubview(keyButton)
+        stackView.addArrangedSubview(squashButton)
+        stackView.addArrangedSubview(anticipationButton)
         
         NSLayoutConstraint.activate([
             stackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
@@ -96,11 +114,61 @@ class ViewController: UIViewController {
     }
     
     @objc private func keyButtonTapped() {
-        
+        label.center = view.center
+        UIView.animateKeyframes(withDuration: 3.0, delay: 0, options: [], animations: {
+            //Animation step 1 -  Initail 45 degree rotation
+            UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.25) {
+                self.label.transform = CGAffineTransform(rotationAngle: .pi / 4)
+            }
+            
+            //Animation step 2 - Move the label up
+            UIView.addKeyframe(withRelativeStartTime: 0.25, relativeDuration: 0.5) {
+                self.label.transform = CGAffineTransform(translationX: 0, y: -50)
+            }
+            
+            //Animation step 3 - Move back to identity
+            UIView.addKeyframe(withRelativeStartTime: 0.75, relativeDuration: 0.25) {
+                self.label.transform = .identity
+            }
+        }, completion: nil)
     }
     
     @objc private func squashButtonTapped() {
+        label.center = CGPoint(x: view.center.x, y: -label.bounds.size.height)
         
+        let animationBlock = {
+            //Drop
+            UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.4) {
+                self.label.center = self.view.center
+            }
+            
+            //Squash
+            UIView.addKeyframe(withRelativeStartTime: 0.3, relativeDuration: 0.2) {
+                self.label.transform = CGAffineTransform(scaleX: 1.7, y: 0.6)
+            }
+            
+            //Stretch
+            UIView.addKeyframe(withRelativeStartTime: 0.5, relativeDuration: 0.2) {
+                self.label.transform = CGAffineTransform(scaleX: 0.6, y: 1.7)
+            }
+            
+            //Returning from stretch
+            UIView.addKeyframe(withRelativeStartTime: 0.7, relativeDuration: 0.1) {
+                self.label.transform = CGAffineTransform(scaleX: 1.11, y: 0.9)
+            }
+            
+            //Finish
+            UIView.addKeyframe(withRelativeStartTime: 0.85, relativeDuration: 0.15) {
+                self.label.transform = .identity
+            }
+            
+        }
+        
+        UIView.animateKeyframes(withDuration: 1.5,
+                                delay: 0,
+                                options: [],
+                                animations: animationBlock,
+                                completion: nil)
     }
     
     @objc private func anticipationButtonTapped() {

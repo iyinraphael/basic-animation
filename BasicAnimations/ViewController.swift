@@ -172,6 +172,26 @@ class ViewController: UIViewController {
     }
     
     @objc private func anticipationButtonTapped() {
+        label.center = view.center
         
+        let animationBlock = {
+            UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.1) {
+                self.label.transform = CGAffineTransform(rotationAngle: .pi/16.0)
+            }
+            
+            UIView.addKeyframe(withRelativeStartTime: 0.1, relativeDuration: 0.2) {
+                self.label.transform = CGAffineTransform(rotationAngle: -.pi/16.0)
+            }
+            
+            UIView.addKeyframe(withRelativeStartTime: 0.2, relativeDuration: 0.8) {
+                self.label.center = CGPoint(x: self.view.bounds.size.width + self.label.bounds.size.width, y: self.view.center.y)
+            }
+        }
+        
+        UIView.animateKeyframes(withDuration: 1.5,
+                                delay: 0,
+                                options: [],
+                                animations: animationBlock,
+                                completion: nil)
     }
 }

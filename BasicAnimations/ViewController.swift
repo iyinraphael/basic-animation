@@ -46,6 +46,11 @@ class ViewController: UIViewController {
         rotateButton.setTitle("Rotate", for: .normal)
         rotateButton.addTarget(self, action: #selector(rotateButtonTapped), for: .touchUpInside)
         
+        let springButton = UIButton(type: .system)
+        springButton.translatesAutoresizingMaskIntoConstraints = false
+        springButton.setTitle("Spring", for: .normal)
+        springButton.addTarget(self, action: #selector(springButtonTapped), for: .touchUpInside)
+        
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
@@ -53,6 +58,7 @@ class ViewController: UIViewController {
         view.addSubview(stackView)
         
         stackView.addArrangedSubview(rotateButton)
+        stackView.addArrangedSubview(springButton)
         
         NSLayoutConstraint.activate([
             stackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
@@ -66,7 +72,7 @@ class ViewController: UIViewController {
         label.center = view.center
         
         UIView.animate(withDuration: 2.0, animations: {
-            self.label.transform = CGAffineTransform(rotationAngle: .pi / 4)
+            self.label.transform = CGAffineTransform(rotationAngle: -.pi / 4)
         }) { _ in
             UIView.animate(withDuration: 2.0) {
                 self.label.transform = .identity
@@ -76,6 +82,16 @@ class ViewController: UIViewController {
     }
     
     @objc private func springButtonTapped() {
+        label.center = view.center
+        
+        label.transform = CGAffineTransform(scaleX: 0.0001, y: 0.0001)
+        UIView.animate(withDuration: 3.0,
+                       delay: 0,
+                       usingSpringWithDamping: 0.3,
+                       initialSpringVelocity: 0,
+                       options: [], animations: {
+                        self.label.transform = .identity
+        }, completion: nil)
         
     }
     
